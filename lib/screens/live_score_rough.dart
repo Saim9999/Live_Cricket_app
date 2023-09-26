@@ -4,8 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:html/parser.dart' as html;
-import 'package:intl/intl.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class MatchItem {
   final String matchTitle;
@@ -147,7 +145,7 @@ class _LiveScoreRoughState extends State<LiveScoreRough> {
                   return InkWell(
                     onTap: () {
                       String originalUrl =
-                          "https://www.cricbuzz.com/${matchItem.linkurl}";
+                          "https://www.cricbuzz.com${matchItem.linkurl}";
                       String modifiedUrl = originalUrl.replaceFirst(
                           "/live-cricket-scores/", "/live-cricket-scorecard/");
                       Get.to(ScorecardRough(url: modifiedUrl));

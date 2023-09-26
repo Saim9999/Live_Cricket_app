@@ -407,3 +407,294 @@ class _NewScreenState extends State<NewScreen> {
     );
   }
 }
+
+// for scorecard headers (example: Batter R B 4s 6s SR)
+      // final innings1Elements = document.querySelectorAll('#innings_1');
+      // for (var innings1Element in innings1Elements) {
+      //   final inningsTitle =
+      //       innings1Element.querySelector('.cb-scrd-hdr-rw span')?.text ?? '';
+      //   final inningsInfo = innings1Element
+      //           .querySelector('.cb-scrd-hdr-rw span.pull-right')
+      //           ?.text ??
+      //       '';
+
+      //   final headerRow = document
+      //       .querySelector('.cb-col.cb-col-100.cb-scrd-sub-hdr.cb-bg-gray');
+      //   final headerColumns = headerRow!.querySelectorAll('.cb-col');
+      //   final batterHeader = headerColumns[0].text;
+      //   final runsHeader = headerColumns[2].text;
+      //   final ballsHeader = headerColumns[3].text;
+      //   final foursHeader = headerColumns[4].text;
+      //   final sixesHeader = headerColumns[5].text;
+      //   final strikeRateHeader = headerColumns[6].text;
+
+      //   print('Innings Title: $inningsTitle $inningsInfo');
+      //   print(
+      //       'Batter Header: $batterHeader $runsHeader $ballsHeader $foursHeader $sixesHeader $strikeRateHeader');
+
+      //   scoreHeaderItems.add(ScoreHeaderItem(
+      //       inningsTitle: inningsTitle,
+      //       inningsInfo: inningsInfo,
+      //       batterHeader: batterHeader,
+      //       runsHeader: runsHeader,
+      //       ballsHeader: ballsHeader,
+      //       foursHeader: foursHeader,
+      //       sixesHeader: sixesHeader,
+      //       strikeRateHeader: strikeRateHeader));
+      // }
+
+      // // for for first batting scorecard
+      // final innings1Div = document.querySelector('#innings_1');
+      // if (innings1Div != null) {
+      //   final players = innings1Div.querySelector('.cb-ltst-wgt-hdr');
+      //   if (players != null) {
+      //     final playersList = players.querySelectorAll('.cb-col.cb-scrd-itms');
+
+      //     for (var playerElement in playersList) {
+      //       final playerName =
+      //           playerElement.querySelector('a.cb-text-link')?.text.trim() ??
+      //               '';
+
+      //       // Skip players with empty names
+      //       if (playerName.isEmpty) {
+      //         continue;
+      //       }
+      //       final dismissal =
+      //           playerElement.querySelector('.text-gray')?.text.trim() ?? '';
+      //       // Skip players with empty names
+      //       if (dismissal.isEmpty) {
+      //         continue;
+      //       }
+
+      //       final runsElements = playerElement.querySelectorAll('.text-right');
+      //       final runs =
+      //           runsElements.isNotEmpty ? runsElements[0].text.trim() : '';
+
+      //       final ballsElementList =
+      //           playerElement.querySelectorAll('.text-right');
+      //       final balls = ballsElementList.length > 1
+      //           ? ballsElementList[1].text.trim()
+      //           : '';
+
+      //       final textRightElements =
+      //           playerElement.querySelectorAll('.text-right');
+      //       final fours = textRightElements.length > 2
+      //           ? textRightElements[2].text.trim()
+      //           : '';
+
+      //       final cbColElements = playerElement.querySelectorAll('.cb-col');
+      //       final sixes =
+      //           cbColElements.length > 5 ? cbColElements[5].text.trim() : '';
+
+      //       final strikeRateElements =
+      //           playerElement.querySelectorAll('.text-right');
+      //       final strikeRate = strikeRateElements.length > 3
+      //           ? strikeRateElements[3].text.trim()
+      //           : '';
+
+      //       print(
+      //           'Player Name: $playerName $dismissal $runs $balls $fours $sixes $strikeRate');
+      //       scorecardItems.add(ScorecardItem(
+      //           batterName: playerName,
+      //           dismissal: dismissal,
+      //           runs: runs,
+      //           balls: balls,
+      //           fours: fours,
+      //           sixes: sixes,
+      //           strikeRate: strikeRate));
+      //     }
+      //   }
+      // }
+
+      // // for Extract Extras data
+      // final firstinningsextraDiv = document.querySelector('#innings_1');
+      // if (firstinningsextraDiv != null) {
+      //   final extrasLabel = firstinningsextraDiv
+      //           .querySelector('.cb-col.cb-col-60')
+      //           ?.text
+      //           .trim() ??
+      //       '';
+      //   final extrasValue = firstinningsextraDiv
+      //           .querySelector('.text-bold.cb-text-black.text-right')
+      //           ?.text
+      //           .trim() ??
+      //       '';
+      //   final extrasDetails = firstinningsextraDiv
+      //           .querySelector('.cb-col-32.cb-col')
+      //           ?.text
+      //           .trim() ??
+      //       '';
+      //   print('Extras Data: $extrasLabel $extrasValue $extrasDetails');
+
+      //   // Select the Total div
+      //   final totalDiv = firstinningsextraDiv;
+      //   // Extract Total data
+      //   final totalLabel = 'Total';
+      //   final totalValue = firstinningsextraDiv
+      //           .querySelector('.text-bold.text-black.text-right')
+      //           ?.text
+      //           .trim() ??
+      //       '';
+      //   final totalDetails = firstinningsextraDiv
+      //       .querySelectorAll('.cb-col-32.cb-col')[1]
+      //       .text
+      //       .trim();
+      //   print('Total Data: $totalLabel $totalValue $totalDetails');
+
+      //   // Extract data for the "Yet to Bat" section
+      //   final yetToBatDiv = firstinningsextraDiv
+      //       .querySelector('.cb-col-100.cb-scrd-itms:last-child');
+
+      //   final yetToBatLabel =
+      //       yetToBatDiv!.querySelector('.cb-col.cb-col-27')?.text.trim() ?? '';
+      //   final yetToBatPlayers = yetToBatDiv
+      //           .querySelector('.cb-col-73.cb-col')
+      //           ?.text
+      //           .trim()
+      //           .replaceAll(' , ', '\n') ??
+      //       '';
+      //   print('Yet to Bat: \n$yetToBatLabel \n$yetToBatPlayers');
+
+      //   // Extract data for the "Fall of Wickets" section
+      //   final fallOfwicketsLabel = firstinningsextraDiv
+      //           .querySelector('.cb-scrd-sub-hdr.cb-bg-gray.text-bold')
+      //           ?.text
+      //           .trim() ??
+      //       '';
+      //   final fallOfWickets = firstinningsextraDiv
+      //           .querySelector('.cb-col.cb-col-100.cb-col-rt.cb-font-13')
+      //           ?.text
+      //           .trim()
+      //           .replaceAll('), ', ')\n') ??
+      //       '';
+
+      //   print('Fall of Wickets: \n$fallOfwicketsLabel \n$fallOfWickets');
+
+      //   totalscoreItems.add(TotalScoreItem(
+      //       extrasLabel: extrasLabel,
+      //       extrasValue: extrasValue,
+      //       extrasDetails: extrasDetails,
+      //       totalLabel: totalLabel,
+      //       totalValue: totalValue,
+      //       totalDetails: totalDetails,
+      //       yettobatLabel: yetToBatLabel,
+      //       yettobatPlayers: yetToBatPlayers,
+      //       fallofwicketsLabel: fallOfwicketsLabel,
+      //       fallofWickets: fallOfWickets));
+
+      //   // Extract data for the bowlers headers
+      //   final bowlerheaderDivs =
+      //       document.querySelectorAll('.cb-scrd-sub-hdr.cb-bg-gray')[2];
+      //   final bowlerheaderColumns =
+      //       bowlerheaderDivs.querySelectorAll('.cb-col');
+      //   final bowlerHeader = bowlerheaderColumns[0].text;
+      //   final overs = bowlerheaderColumns[1].text;
+      //   final maidens = bowlerheaderColumns[2].text;
+      //   final runs = bowlerheaderColumns[3].text;
+      //   final wickets = bowlerheaderColumns[4].text;
+      //   final noBalls = bowlerheaderColumns[5].text;
+      //   final wides = bowlerheaderColumns[6].text;
+      //   final economy = bowlerheaderColumns[7].text;
+
+      //   print(
+      //       'Bowler Header: $bowlerHeader $overs $maidens $runs $wickets $noBalls $wides $economy');
+
+      //   bowlerHeaderItems.add(BowlerHeaderItem(
+      //       bowlerHeader: bowlerHeader,
+      //       oversHeader: overs,
+      //       maidensHeader: maidens,
+      //       runsHeader: runs,
+      //       wicketsHeader: wickets,
+      //       noballsHeader: noBalls,
+      //       widesHeader: wides,
+      //       economyHeader: economy));
+
+      //   // Extract data for the bowlers Data
+      //   final bowlerDataElements =
+      //       firstinningsextraDiv.querySelectorAll('.cb-ltst-wgt-hdr')[1];
+      //   final bowlerDivs = bowlerDataElements
+      //       .querySelectorAll('.cb-col.cb-col-100.cb-scrd-itms');
+      //   for (var bowlerDiv in bowlerDivs) {
+      //     final bowlerName =
+      //         bowlerDiv.querySelector('a.cb-text-link')?.text.trim() ?? '';
+      //     final overs = bowlerDiv
+      //             .querySelector('.cb-col.cb-col-8.text-right')
+      //             ?.text
+      //             .trim() ??
+      //         '';
+      //     final maidens = bowlerDiv
+      //         .querySelectorAll('.cb-col.cb-col-8.text-right')[1]
+      //         .text
+      //         .trim();
+      //     final runs = bowlerDiv
+      //             .querySelector('.cb-col.cb-col-10.text-right')
+      //             ?.text
+      //             .trim() ??
+      //         '';
+      //     final wickets = bowlerDiv
+      //             .querySelector('.cb-col.cb-col-8.text-bold.text-right')
+      //             ?.text
+      //             .trim() ??
+      //         '';
+      //     final noBalls = bowlerDiv
+      //         .querySelectorAll('.cb-col.cb-col-8.text-right')[3]
+      //         .text
+      //         .trim();
+      //     final wides = bowlerDiv
+      //         .querySelectorAll('.cb-col.cb-col-8.text-right')[4]
+      //         .text
+      //         .trim();
+
+      //     final textRightElements =
+      //         bowlerDiv.querySelectorAll('.cb-col.cb-col-10.text-right');
+      //     final economy = textRightElements.length > 1
+      //         ? textRightElements[1].text.trim()
+      //         : '';
+
+      //     print(
+      //         'Bowler Data: $bowlerName $overs $maidens $runs $wickets $noBalls $wides $economy');
+
+      //     bowlerDataItems.add(BowlerDataItem(
+      //         bowlerName: bowlerName,
+      //         overs: overs,
+      //         maidens: maidens,
+      //         runs: runs,
+      //         wickets: wickets,
+      //         noballs: noBalls,
+      //         wides: wides,
+      //         economy: economy));
+      //   }
+
+      //   // for extract the Powerplay headers
+      //   final powerplaysDiv = firstinningsextraDiv
+      //       .querySelectorAll('.cb-scrd-sub-hdr.cb-bg-gray.text-bold')[1];
+      //   final powerplayHeader =
+      //       powerplaysDiv.querySelector('.cb-col-33')?.text ?? '';
+      //   final oversHeader =
+      //       powerplaysDiv.querySelector('.cb-col-33.text-center')?.text ?? '';
+      //   final runsHeader =
+      //       powerplaysDiv.querySelector('.cb-col-33.text-right')?.text ?? '';
+
+      //   print('Powerplay: $powerplayHeader $oversHeader $runsHeader');
+
+      //   powerplayItems.add(PowerPlayItem(
+      //       powerplaysLabel: powerplayHeader,
+      //       oversLabel: oversHeader,
+      //       runsLabel: runsHeader));
+
+      //   // for extract the Powerplay Data
+      //   final powerplayLabel =
+      //       firstinningsextraDiv.querySelectorAll('.cb-col-rt.cb-font-13')[1];
+      //   final mandatoryValue =
+      //       powerplayLabel.querySelector('.cb-col-33')?.text ?? '';
+      //   final oversValue =
+      //       powerplayLabel.querySelector('.cb-col-33.text-center')?.text ?? '';
+      //   final runsValue =
+      //       powerplayLabel.querySelector('.cb-col-33.text-right')?.text ?? '';
+
+      //   print('Powerplay: $mandatoryValue $oversValue $runsValue');
+      //   powerplayDataItems.add(PowerPlayDataItem(
+      //       powerplaysValue: mandatoryValue,
+      //       oversValue: oversValue,
+      //       runsValue: runsValue));
+      // }
