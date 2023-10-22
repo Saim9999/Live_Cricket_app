@@ -1,3 +1,4 @@
+
 // for team scores
 class TeamScore {
   final String teamscorefirst;
@@ -83,21 +84,21 @@ class PlayerData {
   });
 }
 
-class BowlerHeaderItem {
+class BowlerHeader {
   final String bowlerHeader;
-  final String oversHeader;
-  final String maidensHeader;
-  final String runsHeader;
-  final String wicketsHeader;
-  final String economyHeader;
+  // final String oversHeader;
+  // final String maidensHeader;
+  // final String runsHeader;
+  // final String wicketsHeader;
+  // final String economyHeader;
 
-  BowlerHeaderItem({
+  BowlerHeader({
     required this.bowlerHeader,
-    required this.oversHeader,
-    required this.maidensHeader,
-    required this.runsHeader,
-    required this.wicketsHeader,
-    required this.economyHeader,
+    // required this.oversHeader,
+    // required this.maidensHeader,
+    // required this.runsHeader,
+    // required this.wicketsHeader,
+    // required this.economyHeader,
   });
 }
 

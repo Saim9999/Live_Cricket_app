@@ -1,10 +1,11 @@
-import 'package:cricket_worldcup_app/classes/scorecard_classes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:html/parser.dart' as html;
 
 import '../classes/commentary classes.dart';
+import '../classes/scorecard_classes.dart';
 
 class NewScorecard extends StatefulWidget {
   final String url1;
@@ -24,6 +25,10 @@ class _NewScorecardState extends State<NewScorecard> {
   final List<PlayerOfSeries> playerofSeries = [];
   final List<BatterHeaderItem> batterheaderItem = [];
   final List<PlayerData> playerdata = [];
+  final List<BowlerHeader> bowlerheader = [];
+  final List<BowlerData> bowlerdata = [];
+  final List<TimelineData> timelinedata = [];
+  final List<KeyStatsData> keystatsdata = [];
 
   bool isLoading = true;
 
@@ -127,21 +132,10 @@ class _NewScorecardState extends State<NewScorecard> {
       if (headerRow != null) {
         final headerColumns = headerRow.querySelectorAll('.cb-col');
         final batterHeader = headerColumns[0].text;
-        // final runsHeader = headerColumns[1].text;
-        // final ballsHeader = headerColumns[2].text;
-        // final foursHeader = headerColumns[3].text;
-        // final sixesHeader = headerColumns[4].text;
-        // final strikeRateHeader = headerColumns[5].text;
-
         print('Batter Header: $batterHeader');
 
         batterheaderItem.add(BatterHeaderItem(
           batterHeader: batterHeader,
-          // runsHeader: runsHeader,
-          // ballsHeader: ballsHeader,
-          // foursHeader: foursHeader,
-          // sixesHeader: sixesHeader,
-          // strikeRateHeader: strikeRateHeader
         ));
       }
 
@@ -225,6 +219,112 @@ class _NewScorecardState extends State<NewScorecard> {
               'Player Name: $playerName $runs $balls $fours $sixes $strikeRate');
         }
       }
+      // for bowler header
+      final bowlerheaderRows = document
+          .querySelectorAll('.cb-col.cb-col-100.cb-min-hdr-rw.cb-bg-gray');
+
+      if (bowlerheaderRows.isNotEmpty) {
+        final bowlerheaderRow = bowlerheaderRows[1];
+        final bowlerheaderColumns = bowlerheaderRow.querySelectorAll('.cb-col');
+
+        if (bowlerheaderColumns.length >= 6) {
+          final bowlerHeader = bowlerheaderColumns[0].text;
+
+          print('Bowler Header: $bowlerHeader');
+
+          bowlerheader.add(BowlerHeader(
+            bowlerHeader: bowlerHeader,
+          ));
+        }
+      }
+      // for bowler data
+      final extradiv1s = document.querySelectorAll('.cb-min-inf');
+      if (extradiv1s.isNotEmpty) {
+        final extradiv1 = extradiv1s[1];
+        final players = extradiv1.querySelectorAll('.cb-min-itm-rw');
+
+        for (var playerElement in players) {
+          final bowlerName =
+              playerElement.querySelector('a.cb-text-link')?.text.trim() ?? '';
+          final overs =
+              playerElement.querySelectorAll('.text-right')[0].text.trim();
+          final maidens =
+              playerElement.querySelectorAll('.text-right')[1].text.trim();
+          final runsGiven =
+              playerElement.querySelectorAll('.text-right')[2].text.trim();
+          final wickets =
+              playerElement.querySelectorAll('.text-right')[3].text.trim();
+          final economy =
+              playerElement.querySelectorAll('.text-right')[4].text.trim();
+
+          final playerUrl =
+              playerElement.querySelector('a.cb-text-link')!.attributes['href'];
+          print('Bowler Player Url: ${playerUrl.toString()}');
+
+          final response =
+              await http.get(Uri.parse('https://cricbuzz.com$playerUrl'));
+
+          if (response.statusCode == 200) {
+            final document = html.parse(response.body);
+            final playerName =
+                document.querySelector('h1[itemprop="name"]')?.text ?? '';
+            final playerCountry =
+                document.querySelector('h3.cb-font-18.text-gray')?.text ?? '';
+            final profileImage = document
+                    .querySelector('img[title="profile image"]')
+                    ?.attributes['src'] ??
+                '';
+
+            print('Player Name: $playerName');
+            print('Player Country: $playerCountry');
+            print('Profile Image URL: $profileImage');
+
+            bowlerdata.add(BowlerData(
+                bowlername: bowlerName,
+                bowlercountry: playerCountry,
+                bnowlerimage: profileImage,
+                overs: overs,
+                maidens: maidens,
+                runs: runsGiven,
+                wickets: wickets,
+                economy: economy));
+          }
+
+          print(
+              'Bowler Data: $bowlerName $overs $maidens $runsGiven $wickets $economy');
+        }
+      }
+      // for recent timeline
+      final recentTimeline = document.querySelector('.cb-min-rcnt');
+      if (recentTimeline != null) {
+        final recentTimelineElement =
+            recentTimeline.querySelector('span.text-bold');
+        final recentTimelineText = recentTimelineElement?.text ?? '';
+        final recentTimelineValue =
+            recentTimelineElement!.nextElementSibling?.text ?? '';
+        print(recentTimelineText);
+        print(recentTimelineValue);
+
+        timelinedata.add(TimelineData(
+            recentTimelineText: recentTimelineText,
+            recentTimelineValue: recentTimelineValue));
+      }
+      // for key stats
+      final keystatsElement =
+          document.querySelector('.cb-col.cb-col-33.cb-key-st-lst');
+
+      if (keystatsElement != null) {
+        final keystats = keystatsElement.text
+            .trim()
+            .replaceAll('overs ', 'overs: ')
+            .replaceAll('  ', '\n');
+
+        print('\n$keystats');
+        keystatsdata.add(KeyStatsData(keystatsLabel: keystats));
+      } else {
+        // Handle the case when the element is not found
+        print('Keystats element not found.');
+      }
 
       if (!mounted) {
         return;
@@ -249,7 +349,6 @@ class _NewScorecardState extends State<NewScorecard> {
     );
     if (response2.statusCode == 200) {
       final document = html.parse(response2.body);
-
       final matchstatus =
           document.querySelector('.cb-scrcrd-status')?.text ?? '';
       print("Match Status: $matchstatus");
@@ -288,117 +387,16 @@ class _NewScorecardState extends State<NewScorecard> {
               ? const Center(child: CircularProgressIndicator())
               : ListView(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: listbuilderMethod(
-                              teamScores,
-                              (item) => Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    item.teamscoreSecond,
-                                    style: textMethod(
-                                        Colors.white,
-                                        14.sp,
-                                        FontWeight.bold,
-                                        'SpaceGrotesk-Regular'),
-                                  ),
-                                  Text(
-                                    item.teamscorefirst,
-                                    style: textMethod(
-                                        Colors.white,
-                                        14.sp,
-                                        FontWeight.bold,
-                                        'SpaceGrotesk-Regular'),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Column(
-                              children: [
-                                listbuilderMethod(
-                                    currentRate,
-                                    (item) => Column(
-                                          children: [
-                                            Text(
-                                              item.currRate,
-                                              style: textMethod(
-                                                  Colors.white,
-                                                  14.sp,
-                                                  FontWeight.normal,
-                                                  'SpaceGrotesk-Regular'),
-                                            ),
-                                          ],
-                                        )),
-                                listbuilderMethod(
-                                    reqRate,
-                                    (item) => Column(
-                                          children: [
-                                            Text(
-                                              item.reqRate,
-                                              style: textMethod(
-                                                  Colors.white,
-                                                  14.sp,
-                                                  FontWeight.normal,
-                                                  'SpaceGrotesk-Regular'),
-                                            ),
-                                          ],
-                                        )),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    listbuilderMethod(
-                        matchStatus,
-                        (item) => Padding(
-                              padding: const EdgeInsets.only(left: 8, right: 8),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    item.matchStatus,
-                                    style: textMethod(
-                                        Colors.white,
-                                        14.sp,
-                                        FontWeight.bold,
-                                        'SpaceGrotesk-Regular'),
-                                  ),
-                                  Divider(
-                                    color: Colors.white,
-                                  )
-                                ],
-                              ),
-                            )),
-                    listbuilderMethod(
-                        playerofMatch,
-                        (item) => Padding(
-                              padding: const EdgeInsets.only(left: 8, right: 8),
-                              child: Text(
-                                '${item.playerMotmLabel} : ${item.playerMotmValue}',
-                                style: textMethod(Colors.white, 14.sp,
-                                    FontWeight.bold, 'SpaceGrotesk-Regular'),
-                              ),
-                            )),
-                    listbuilderMethod(
-                        playerofSeries,
-                        (item) => Padding(
-                              padding: const EdgeInsets.only(left: 8, right: 8),
-                              child: Text(
-                                '${item.playerMotsLabel} : ${item.playerMotsValue}',
-                                style: textMethod(Colors.white, 14.sp,
-                                    FontWeight.bold, 'SpaceGrotesk-Regular'),
-                              ),
-                            )),
                     listbuilderMethod(
                       batterheaderItem,
-                      (item) => Text(item.batterHeader),
+                      (item) => Padding(
+                        padding: const EdgeInsets.only(left: 8),
+                        child: Text(
+                          item.batterHeader,
+                          style: textMethod(Colors.white, 16.sp,
+                              FontWeight.bold, 'Mulish-ExtraBold'),
+                        ),
+                      ),
                     ),
                     listbuilderMethod(
                         playerdata,
@@ -505,6 +503,274 @@ class _NewScorecardState extends State<NewScorecard> {
                                     ),
                                   ],
                                 ),
+                              ),
+                            )),
+                    listbuilderMethod(
+                        bowlerheader,
+                        (item) => Padding(
+                              padding: const EdgeInsets.only(left: 8),
+                              child: Text(item.bowlerHeader,
+                                  style: textMethod(Colors.white, 16.sp,
+                                      FontWeight.bold, 'Mulish-ExtraBold')),
+                            )),
+                    listbuilderMethod(
+                        bowlerdata,
+                        (item) => Container(
+                              width: double.infinity,
+                              child: ListTile(
+                                visualDensity: VisualDensity.compact,
+                                leading: CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                      'https://www.cricbuzz.com/${item.bnowlerimage}'),
+                                ),
+                                title: Text(
+                                  item.bowlername,
+                                  style: textMethod(Colors.white, 12.sp,
+                                      FontWeight.bold, 'SpaceGrotesk-Regular'),
+                                ),
+                                subtitle: Text(
+                                  item.bowlercountry,
+                                  style: textMethod(Colors.grey, 12.sp,
+                                      FontWeight.bold, 'SpaceGrotesk-Regular'),
+                                ),
+                                trailing: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      item.runs,
+                                      style: textMethod(
+                                          Colors.white,
+                                          15.sp,
+                                          FontWeight.bold,
+                                          'SpaceGrotesk-Regular'),
+                                    ),
+                                    SizedBox(width: 5.w),
+                                    Text(
+                                      '(${item.overs} Ov.)',
+                                      style: textMethod(
+                                          Colors.grey,
+                                          14.sp,
+                                          FontWeight.normal,
+                                          'SpaceGrotesk-Regular'),
+                                    ),
+                                    SizedBox(width: 20.w),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text(
+                                              'ECO : ',
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            Text(
+                                              item.economy,
+                                              style: textMethod(
+                                                  Colors.grey,
+                                                  14.sp,
+                                                  FontWeight.bold,
+                                                  'SpaceGrotesk-Regular'),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              'W : ',
+                                              style: textMethod(
+                                                  Colors.white,
+                                                  14.sp,
+                                                  FontWeight.normal,
+                                                  'SpaceGrotesk-Regular'),
+                                            ),
+                                            Text(
+                                              item.wickets,
+                                              style: textMethod(
+                                                  Colors.red,
+                                                  14.sp,
+                                                  FontWeight.normal,
+                                                  'SpaceGrotesk-Regular'),
+                                            ),
+                                            Text(
+                                              ' | M : ',
+                                              style: textMethod(
+                                                  Colors.white,
+                                                  14.sp,
+                                                  FontWeight.normal,
+                                                  'SpaceGrotesk-Regular'),
+                                            ),
+                                            Text(
+                                              item.maidens,
+                                              style: textMethod(
+                                                  Colors.deepPurple,
+                                                  14.sp,
+                                                  FontWeight.bold,
+                                                  'SpaceGrotesk-Regular'),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )),
+                    listbuilderMethod(
+                        timelinedata,
+                        (item) => Padding(
+                              padding: const EdgeInsets.only(left: 8),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    item.recentTimelineText,
+                                    style: textMethod(Colors.white, 16.sp,
+                                        FontWeight.bold, 'Mulish-ExtraBold'),
+                                  ),
+                                  Text(
+                                    item.recentTimelineValue,
+                                    style: textMethod(
+                                        Colors.grey,
+                                        14.sp,
+                                        FontWeight.normal,
+                                        'SpaceGrotesk-Regular'),
+                                  ),
+                                ],
+                              ),
+                            )),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: listbuilderMethod(
+                              teamScores,
+                              (item) => Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    item.teamscoreSecond,
+                                    style: textMethod(
+                                        Colors.white,
+                                        14.sp,
+                                        FontWeight.bold,
+                                        'SpaceGrotesk-Regular'),
+                                  ),
+                                  Text(
+                                    item.teamscorefirst,
+                                    style: textMethod(
+                                        Colors.white,
+                                        14.sp,
+                                        FontWeight.bold,
+                                        'SpaceGrotesk-Regular'),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Column(
+                              children: [
+                                listbuilderMethod(
+                                    currentRate,
+                                    (item) => Column(
+                                          children: [
+                                            Text(
+                                              item.currRate,
+                                              style: textMethod(
+                                                  Colors.white,
+                                                  14.sp,
+                                                  FontWeight.normal,
+                                                  'SpaceGrotesk-Regular'),
+                                            ),
+                                          ],
+                                        )),
+                                listbuilderMethod(
+                                    reqRate,
+                                    (item) => Column(
+                                          children: [
+                                            Text(
+                                              item.reqRate,
+                                              style: textMethod(
+                                                  Colors.white,
+                                                  14.sp,
+                                                  FontWeight.normal,
+                                                  'SpaceGrotesk-Regular'),
+                                            ),
+                                          ],
+                                        )),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                              child: listbuilderMethod(
+                                  keystatsdata,
+                                  (item) => TextButton(
+                                      onPressed: () {
+                                        Get.defaultDialog(
+                                          content: Text(
+                                            item.keystatsLabel,
+                                            style: textMethod(
+                                                Colors.black,
+                                                18.sp,
+                                                FontWeight.normal,
+                                                'Mulish-ExtraBold'),
+                                          ),
+                                          title: '',
+                                          titleStyle: TextStyle(fontSize: 1.sp),
+                                        );
+                                      },
+                                      child: Text(
+                                        'Key Stats',
+                                        style: TextStyle(
+                                          color:
+                                              Color.fromARGB(255, 114, 255, 48),
+                                        ),
+                                      ))))
+                        ],
+                      ),
+                    ),
+                    listbuilderMethod(
+                        playerofMatch,
+                        (item) => Padding(
+                              padding: const EdgeInsets.only(left: 8, right: 8),
+                              child: Text(
+                                '${item.playerMotmLabel} : ${item.playerMotmValue}',
+                                style: textMethod(Colors.white, 14.sp,
+                                    FontWeight.bold, 'SpaceGrotesk-Regular'),
+                              ),
+                            )),
+                    listbuilderMethod(
+                        playerofSeries,
+                        (item) => Padding(
+                              padding: const EdgeInsets.only(left: 8, right: 8),
+                              child: Text(
+                                '${item.playerMotsLabel} : ${item.playerMotsValue}',
+                                style: textMethod(Colors.white, 14.sp,
+                                    FontWeight.bold, 'SpaceGrotesk-Regular'),
+                              ),
+                            )),
+                    listbuilderMethod(
+                        matchStatus,
+                        (item) => Padding(
+                              padding: const EdgeInsets.only(left: 8, right: 8),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    item.matchStatus,
+                                    style: textMethod(
+                                        Colors.white,
+                                        14.sp,
+                                        FontWeight.bold,
+                                        'SpaceGrotesk-Regular'),
+                                  ),
+                                  Divider(
+                                    color: Colors.white,
+                                  )
+                                ],
                               ),
                             )),
                   ],

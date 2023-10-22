@@ -29,7 +29,7 @@ class CommentaryRough extends StatefulWidget {
 class _CommentaryRoughState extends State<CommentaryRough> {
   final List<BatterHeaderItem> batterheaderItem = [];
   final List<PlayerData> playerdata = [];
-  final List<BowlerHeaderItem> bowlerheaderItem = [];
+  final List<BowlerHeader> bowlerheader = [];
   final List<BowlerData> bowlerdata = [];
   final List<TimelineData> timelinedata = [];
   final List<KeyStatsData> keystatsdata = [];
@@ -130,13 +130,13 @@ class _CommentaryRoughState extends State<CommentaryRough> {
             'Batter Header: $batterHeader $runsHeader $ballsHeader $foursHeader $sixesHeader $strikeRateHeader');
 
         batterheaderItem.add(BatterHeaderItem(
-            batterHeader: batterHeader,
-            // runsHeader: runsHeader,
-            // ballsHeader: ballsHeader,
-            // foursHeader: foursHeader,
-            // sixesHeader: sixesHeader,
-            // strikeRateHeader: strikeRateHeader
-            ));
+          batterHeader: batterHeader,
+          // runsHeader: runsHeader,
+          // ballsHeader: ballsHeader,
+          // foursHeader: foursHeader,
+          // sixesHeader: sixesHeader,
+          // strikeRateHeader: strikeRateHeader
+        ));
       }
 
       // for batter data
@@ -239,13 +239,14 @@ class _CommentaryRoughState extends State<CommentaryRough> {
           print(
               'Bowler Header: $bowlerHeader $oversHeader $maidensHeader $runsHeader $wicketsHeader $economyHeader');
 
-          bowlerheaderItem.add(BowlerHeaderItem(
-              bowlerHeader: bowlerHeader,
-              oversHeader: oversHeader,
-              maidensHeader: maidensHeader,
-              runsHeader: runsHeader,
-              wicketsHeader: wicketsHeader,
-              economyHeader: economyHeader));
+          bowlerheader.add(BowlerHeader(
+            bowlerHeader: bowlerHeader,
+            // oversHeader: oversHeader,
+            // maidensHeader: maidensHeader,
+            // runsHeader: runsHeader,
+            // wicketsHeader: wicketsHeader,
+            // economyHeader: economyHeader
+          ));
         }
       }
 
@@ -436,9 +437,9 @@ class _CommentaryRoughState extends State<CommentaryRough> {
           ListView.builder(
             shrinkWrap: true,
             physics: ScrollPhysics(),
-            itemCount: bowlerheaderItem.length,
+            itemCount: bowlerheader.length,
             itemBuilder: (context, index) {
-              final item = bowlerheaderItem[index];
+              final item = bowlerheader[index];
               return Row(
                 children: [
                   SizedBox(
@@ -448,23 +449,23 @@ class _CommentaryRoughState extends State<CommentaryRough> {
                   SizedBox(
                     width: 10.w,
                   ),
-                  Text(item.oversHeader),
-                  SizedBox(
-                    width: 10.w,
-                  ),
-                  Text(item.maidensHeader),
-                  SizedBox(
-                    width: 10.w,
-                  ),
-                  Text(item.runsHeader),
-                  SizedBox(
-                    width: 10.w,
-                  ),
-                  Text(item.wicketsHeader),
-                  SizedBox(
-                    width: 10.w,
-                  ),
-                  Text(item.economyHeader),
+                  // Text(item.oversHeader),
+                  // SizedBox(
+                  //   width: 10.w,
+                  // ),
+                  // Text(item.maidensHeader),
+                  // SizedBox(
+                  //   width: 10.w,
+                  // ),
+                  // Text(item.runsHeader),
+                  // SizedBox(
+                  //   width: 10.w,
+                  // ),
+                  // Text(item.wicketsHeader),
+                  // SizedBox(
+                  //   width: 10.w,
+                  // ),
+                  // Text(item.economyHeader),
                 ],
               );
             },
