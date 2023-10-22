@@ -1,9 +1,12 @@
-import 'package:cricket_worldcup_app/screens/scorecard_rough.dart';
+import 'package:cricket_worldcup_app/rough_screens/scorecard_rough.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:html/parser.dart' as html;
+import 'package:url_launcher/url_launcher.dart';
+
+import 'comentary_rough_screen.dart';
 
 class MatchItem {
   final String matchTitle;
@@ -143,13 +146,21 @@ class _LiveScoreRoughState extends State<LiveScoreRough> {
                 itemBuilder: (context, index) {
                   final matchItem = matchItems[index];
                   return InkWell(
-                    onTap: () {
+                    onTap: () async {
                       String originalUrl =
                           "https://www.cricbuzz.com${matchItem.linkurl}";
                       String modifiedUrl = originalUrl.replaceFirst(
                           "/live-cricket-scores/", "/live-cricket-scorecard/");
                       Get.to(ScorecardRough(url: modifiedUrl));
                       print('Lint Url wwhdhwdh: $modifiedUrl');
+                      // String originalUrl =
+                      //     "https://www.cricbuzz.com${matchItem.linkurl}";
+                      // if (await canLaunchUrl(originalUrl)) {
+                      //   await launchUrl(originalUrl);
+                      // } else {
+                      //   print("Could not launch player profile.");
+                      // }
+                      // Get.to(CommentaryRough(url: originalUrl));
                     },
                     child: Column(
                       children: [

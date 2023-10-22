@@ -1,7 +1,4 @@
-import 'package:cricket_worldcup_app/screens/live_score_rough.dart';
 import 'package:cricket_worldcup_app/screens/main_home_screen.dart';
-import 'package:cricket_worldcup_app/screens/newscreen.dart';
-import 'package:cricket_worldcup_app/screens/scorecard_rough.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
@@ -27,7 +24,7 @@ class MyApp extends StatelessWidget {
               theme: ThemeData(
                 primarySwatch: Colors.blue,
               ),
-              home: LiveScoreRough());
+              home: MainHomeScreen());
         });
   }
 }

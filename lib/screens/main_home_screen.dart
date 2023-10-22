@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'live_scrore_screen.dart';
 import 'more_option_screen.dart';
 import 'fixtures_screen.dart';
 import 'news_screen.dart';
@@ -17,7 +16,6 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
 
   final List<Widget> _tabs = [
     // Your tab views here
-    const LiveScoreScreen(), // Live Score for the first tab
     const NewsScreen(), // News in the second tab
     const TabBarScreen(), // Tabbar for the third tab
     const MoreOptionScreen(), // More Option for the third tab
@@ -39,13 +37,8 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
         },
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            label: 'Home',
-            backgroundColor: Color.fromARGB(255, 15, 19, 1),
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.newspaper_sharp),
-            label: 'News',
+            label: 'Live',
             backgroundColor: Color.fromARGB(255, 15, 19, 1),
           ),
           BottomNavigationBarItem(
