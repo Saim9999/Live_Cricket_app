@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'more_option_screen.dart';
+import 'more options/more_option_screen.dart';
 import 'fixtures_screen.dart';
 import 'news_screen.dart';
 

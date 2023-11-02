@@ -491,6 +491,7 @@ class ThirdTotalScoreItem extends TotalScoreItem {
           fallofWickets: fallofWickets,
         );
 }
+
 class FourthTotalScoreItem extends TotalScoreItem {
   FourthTotalScoreItem({
     required extrasLabel,
@@ -547,7 +548,6 @@ void extractTotalScoreItem(document, List user, String inningsId) {
     // Extract data for the "Yet to Bat" section
     final yetToBatDiv =
         extradiv.querySelector('.cb-col-100.cb-scrd-itms:last-child');
-
     final yetToBatLabel =
         yetToBatDiv!.querySelector('.cb-col.cb-col-27')?.text.trim() ?? '';
     final yetToBatPlayers = yetToBatDiv
@@ -556,7 +556,10 @@ void extractTotalScoreItem(document, List user, String inningsId) {
             .trim()
             .replaceAll(' , ', '\n') ??
         '';
-    print('Yet to Bat: \n$yetToBatLabel \n$yetToBatPlayers');
+
+    if (yetToBatLabel.isNotEmpty && yetToBatPlayers.isNotEmpty) {
+      print('Yet to Bat: \n$yetToBatLabel \n$yetToBatPlayers');
+    }
 
     // Extract data for the "Fall of Wickets" section
     final fallOfwicketsLabel = extradiv
@@ -571,7 +574,7 @@ void extractTotalScoreItem(document, List user, String inningsId) {
             .replaceAll('), ', ')\n') ??
         '';
 
-    print('Fall of Wickets: \n$fallOfwicketsLabel \n$fallOfWickets');
+    print('\n$fallOfwicketsLabel \n$fallOfWickets');
 
     if (inningsId == '1') {
       user.add(FirstTotalScoreItem(
@@ -627,106 +630,116 @@ void extractTotalScoreItem(document, List user, String inningsId) {
 
 abstract class BowlerHeaderItem {
   final String bowlerHeader;
-  final String oversHeader;
-  final String maidensHeader;
-  final String runsHeader;
-  final String wicketsHeader;
-  final String noballsHeader;
-  final String widesHeader;
-  final String economyHeader;
+  // final String oversHeader;
+  // final String maidensHeader;
+  // final String runsHeader;
+  // final String wicketsHeader;
+  // final String noballsHeader;
+  // final String widesHeader;
+  // final String economyHeader;
 
   BowlerHeaderItem(
       {required this.bowlerHeader,
-      required this.oversHeader,
-      required this.maidensHeader,
-      required this.runsHeader,
-      required this.wicketsHeader,
-      required this.noballsHeader,
-      required this.widesHeader,
-      required this.economyHeader});
+      // required this.oversHeader,
+      // required this.maidensHeader,
+      // required this.runsHeader,
+      // required this.wicketsHeader,
+      // required this.noballsHeader,
+      // required this.widesHeader,
+      // required this.economyHeader
+      });
 }
 
 class FirstBowlerHeaderItem extends BowlerHeaderItem {
   FirstBowlerHeaderItem(
       {required bowlerHeader,
-      required oversHeader,
-      required maidensHeader,
-      required runsHeader,
-      required wicketsHeader,
-      required noballsHeader,
-      required widesHeader,
-      required economyHeader})
+      // required oversHeader,
+      // required maidensHeader,
+      // required runsHeader,
+      // required wicketsHeader,
+      // required noballsHeader,
+      // required widesHeader,
+      // required economyHeader
+      })
       : super(
             bowlerHeader: bowlerHeader,
-            oversHeader: oversHeader,
-            maidensHeader: maidensHeader,
-            runsHeader: runsHeader,
-            wicketsHeader: wicketsHeader,
-            noballsHeader: noballsHeader,
-            widesHeader: widesHeader,
-            economyHeader: economyHeader);
+            // oversHeader: oversHeader,
+            // maidensHeader: maidensHeader,
+            // runsHeader: runsHeader,
+            // wicketsHeader: wicketsHeader,
+            // noballsHeader: noballsHeader,
+            // widesHeader: widesHeader,
+            // economyHeader: economyHeader
+            );
 }
 
 class SecondBowlerHeaderItem extends BowlerHeaderItem {
   SecondBowlerHeaderItem(
       {required bowlerHeader,
-      required oversHeader,
-      required maidensHeader,
-      required runsHeader,
-      required wicketsHeader,
-      required noballsHeader,
-      required widesHeader,
-      required economyHeader})
+      // required oversHeader,
+      // required maidensHeader,
+      // required runsHeader,
+      // required wicketsHeader,
+      // required noballsHeader,
+      // required widesHeader,
+      // required economyHeader
+      })
       : super(
             bowlerHeader: bowlerHeader,
-            oversHeader: oversHeader,
-            maidensHeader: maidensHeader,
-            runsHeader: runsHeader,
-            wicketsHeader: wicketsHeader,
-            noballsHeader: noballsHeader,
-            widesHeader: widesHeader,
-            economyHeader: economyHeader);
+            // oversHeader: oversHeader,
+            // maidensHeader: maidensHeader,
+            // runsHeader: runsHeader,
+            // wicketsHeader: wicketsHeader,
+            // noballsHeader: noballsHeader,
+            // widesHeader: widesHeader,
+            // economyHeader: economyHeader
+            );
 }
 
 class ThirdBowlerHeaderItem extends BowlerHeaderItem {
   ThirdBowlerHeaderItem(
       {required bowlerHeader,
-      required oversHeader,
-      required maidensHeader,
-      required runsHeader,
-      required wicketsHeader,
-      required noballsHeader,
-      required widesHeader,
-      required economyHeader})
+      // required oversHeader,
+      // required maidensHeader,
+      // required runsHeader,
+      // required wicketsHeader,
+      // required noballsHeader,
+      // required widesHeader,
+      // required economyHeader
+      })
       : super(
             bowlerHeader: bowlerHeader,
-            oversHeader: oversHeader,
-            maidensHeader: maidensHeader,
-            runsHeader: runsHeader,
-            wicketsHeader: wicketsHeader,
-            noballsHeader: noballsHeader,
-            widesHeader: widesHeader,
-            economyHeader: economyHeader);
+            // oversHeader: oversHeader,
+            // maidensHeader: maidensHeader,
+            // runsHeader: runsHeader,
+            // wicketsHeader: wicketsHeader,
+            // noballsHeader: noballsHeader,
+            // widesHeader: widesHeader,
+            // economyHeader: economyHeader
+            );
 }
+
 class FourthBowlerHeaderItem extends BowlerHeaderItem {
   FourthBowlerHeaderItem(
       {required bowlerHeader,
-      required oversHeader,
-      required maidensHeader,
-      required runsHeader,
-      required wicketsHeader,
-      required noballsHeader,
-      required widesHeader,
-      required economyHeader})
+      // required oversHeader,
+      // required maidensHeader,
+      // required runsHeader,
+      // required wicketsHeader,
+      // required noballsHeader,
+      // required widesHeader,
+      // required economyHeader
+      })
       : super(
             bowlerHeader: bowlerHeader,
-            oversHeader: oversHeader,
-            maidensHeader: maidensHeader,
-            runsHeader: runsHeader,
-            wicketsHeader: wicketsHeader,
-            noballsHeader: noballsHeader,
-            widesHeader: widesHeader,
-            economyHeader: economyHeader);
+            // oversHeader: oversHeader,
+            // maidensHeader: maidensHeader,
+            // runsHeader: runsHeader,
+            // wicketsHeader: wicketsHeader,
+            // noballsHeader: noballsHeader,
+            // widesHeader: widesHeader,
+            // economyHeader: economyHeader
+            );
 }
 
 void extractBowlerHeaderItem(document, List user, String inningsId) {
@@ -736,62 +749,66 @@ void extractBowlerHeaderItem(document, List user, String inningsId) {
         document.querySelectorAll('.cb-scrd-sub-hdr.cb-bg-gray')[2];
     final bowlerheaderColumns = bowlerheaderDivs.querySelectorAll('.cb-col');
     final bowlerHeader = bowlerheaderColumns[0].text;
-    final overs = bowlerheaderColumns[1].text;
-    final maidens = bowlerheaderColumns[2].text;
-    final runs = bowlerheaderColumns[3].text;
-    final wickets = bowlerheaderColumns[4].text;
-    final noBalls = bowlerheaderColumns[5].text;
-    final wides = bowlerheaderColumns[6].text;
-    final economy = bowlerheaderColumns[7].text;
+    // final overs = bowlerheaderColumns[1].text;
+    // final maidens = bowlerheaderColumns[2].text;
+    // final runs = bowlerheaderColumns[3].text;
+    // final wickets = bowlerheaderColumns[4].text;
+    // final noBalls = bowlerheaderColumns[5].text;
+    // final wides = bowlerheaderColumns[6].text;
+    // final economy = bowlerheaderColumns[7].text;
 
     print(
-        'Bowler Header: $bowlerHeader $overs $maidens $runs $wickets $noBalls $wides $economy');
+        'Bowler Header: $bowlerHeader');
 
     if (inningsId == '1') {
       user.add(FirstBowlerHeaderItem(
           bowlerHeader: bowlerHeader,
-          oversHeader: overs,
-          maidensHeader: maidens,
-          runsHeader: runs,
-          wicketsHeader: wickets,
-          noballsHeader: noBalls,
-          widesHeader: wides,
-          economyHeader: economy));
+          // oversHeader: overs,
+          // maidensHeader: maidens,
+          // runsHeader: runs,
+          // wicketsHeader: wickets,
+          // noballsHeader: noBalls,
+          // widesHeader: wides,
+          // economyHeader: economy
+          ));
     } else if (inningsId == '2') {
       user.add(
         SecondBowlerHeaderItem(
             bowlerHeader: bowlerHeader,
-            oversHeader: overs,
-            maidensHeader: maidens,
-            runsHeader: runs,
-            wicketsHeader: wickets,
-            noballsHeader: noBalls,
-            widesHeader: wides,
-            economyHeader: economy),
+            // oversHeader: overs,
+            // maidensHeader: maidens,
+            // runsHeader: runs,
+            // wicketsHeader: wickets,
+            // noballsHeader: noBalls,
+            // widesHeader: wides,
+            // economyHeader: economy
+            ),
       );
     } else if (inningsId == '3') {
       user.add(
         ThirdBowlerHeaderItem(
             bowlerHeader: bowlerHeader,
-            oversHeader: overs,
-            maidensHeader: maidens,
-            runsHeader: runs,
-            wicketsHeader: wickets,
-            noballsHeader: noBalls,
-            widesHeader: wides,
-            economyHeader: economy),
+            // oversHeader: overs,
+            // maidensHeader: maidens,
+            // runsHeader: runs,
+            // wicketsHeader: wickets,
+            // noballsHeader: noBalls,
+            // widesHeader: wides,
+            // economyHeader: economy
+            ),
       );
     } else if (inningsId == '4') {
       user.add(
         FourthBowlerHeaderItem(
             bowlerHeader: bowlerHeader,
-            oversHeader: overs,
-            maidensHeader: maidens,
-            runsHeader: runs,
-            wicketsHeader: wickets,
-            noballsHeader: noBalls,
-            widesHeader: wides,
-            economyHeader: economy),
+            // oversHeader: overs,
+            // maidensHeader: maidens,
+            // runsHeader: runs,
+            // wicketsHeader: wickets,
+            // noballsHeader: noBalls,
+            // widesHeader: wides,
+            // economyHeader: economy
+            ),
       );
     }
   }
@@ -881,6 +898,7 @@ class ThirdBowlerDataItem extends BowlerDataItem {
             wides: wides,
             economy: economy);
 }
+
 class FourthBowlerDataItem extends BowlerDataItem {
   FourthBowlerDataItem({
     required bowlerName,
@@ -940,7 +958,7 @@ void extractBowlerDataItem(document, List user, String inningsId) {
       final textRightElements =
           bowlerDiv.querySelectorAll('.cb-col.cb-col-10.text-right');
       final economy =
-          textRightElements.length > 1 ? textRightElements[1].text.trim() : ''; 
+          textRightElements.length > 1 ? textRightElements[1].text.trim() : '';
 
       print(
           'Bowler Data: $bowlerName $overs $maidens $runs $wickets $noBalls $wides $economy');

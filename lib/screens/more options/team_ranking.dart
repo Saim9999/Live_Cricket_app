@@ -241,12 +241,14 @@ class _TeamRankingState extends State<TeamRanking> {
                                                   'SpaceGrotesk-Regular',
                                               color: Colors.white)),
                                       SizedBox(width: 45.w),
-                                      Text(testTeamPoints[index],
-                                          style: TextStyle(
-                                              fontSize: 14.sp,
-                                              fontFamily:
-                                                  'SpaceGrotesk-Regular',
-                                              color: Colors.white)),
+                                      Expanded(
+                                        child: Text(testTeamPoints[index],
+                                            style: TextStyle(
+                                                fontSize: 14.sp,
+                                                fontFamily:
+                                                    'SpaceGrotesk-Regular',
+                                                color: Colors.white)),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -403,7 +405,7 @@ class _TeamRankingState extends State<TeamRanking> {
                                       color: Colors.white),
                                 ),
                                 trailing: Container(
-                                  width: 110.w,
+                                  width: 120.w,
                                   child: Row(
                                     children: [
                                       Text(t20TeamRating[index],

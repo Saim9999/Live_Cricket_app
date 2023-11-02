@@ -11,7 +11,7 @@ import 'package:html/parser.dart' as html;
 
 import '../classes/commentary classes.dart';
 import '../rough_screens/scorecard_rough.dart';
-import 'new_scorecard_screen.dart';
+import 'scorecard/score_info_screen.dart';
 
 class NewsScreen extends StatefulWidget {
   const NewsScreen({super.key});
@@ -283,16 +283,21 @@ class _NewsScreenState extends State<NewsScreen> {
                                             onTap: () async {
                                               String originalUrl =
                                                   "https://www.cricbuzz.com${matchItem.linkurl}";
-                                              String modifiedUrl =
+                                              String scorecardUrl =
                                                   originalUrl.replaceFirst(
                                                       "/live-cricket-scores/",
                                                       "/live-cricket-scorecard/");
-                                              Get.to(NewScorecard(
+                                              String squaddUrl =
+                                                  originalUrl.replaceFirst(
+                                                      "/live-cricket-scores/",
+                                                      "/cricket-match-squads/");
+                                              Get.to(CompleteScore(
                                                 url1: originalUrl,
-                                                url2: modifiedUrl,
+                                                url2: scorecardUrl,
+                                                url3: squaddUrl,
                                               ));
                                               print(
-                                                  'Lint Url wwhdhwdh: $modifiedUrl');
+                                                  'Lint Url wwhdhwdh: $scorecardUrl');
                                             },
                                             child: Container(
                                               height: 200.h,

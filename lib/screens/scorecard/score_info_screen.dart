@@ -1,22 +1,27 @@
+import 'package:cricket_worldcup_app/screens/scorecard/scorecard_screen.dart';
+import 'package:cricket_worldcup_app/screens/scorecard/squad_info_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:html/parser.dart' as html;
+import '../../classes/commentary classes.dart';
+import '../../classes/scorecard_classes.dart';
+import '../../utils/text_style.dart';
+import 'match_info_screen.dart';
 
-import '../classes/commentary classes.dart';
-import '../classes/scorecard_classes.dart';
-
-class NewScorecard extends StatefulWidget {
+class CompleteScore extends StatefulWidget {
   final String url1;
   final String url2;
-  const NewScorecard({super.key, required this.url1, required this.url2});
+  final String url3;
+  const CompleteScore(
+      {super.key, required this.url1, required this.url2, required this.url3});
 
   @override
-  State<NewScorecard> createState() => _NewScorecardState();
+  State<CompleteScore> createState() => _CompleteScoreState();
 }
 
-class _NewScorecardState extends State<NewScorecard> {
+class _CompleteScoreState extends State<CompleteScore> {
   final List<TeamScore> teamScores = [];
   final List<MatchStatus> matchStatus = [];
   final List<CurrentRate> currentRate = [];
@@ -342,7 +347,6 @@ class _NewScorecardState extends State<NewScorecard> {
         isLoading = false; // Set isLoading to false in case of failure
       });
     }
-
     //////////////////////////////////
     final response2 = await http.get(
       Uri.parse(widget.url2),
@@ -817,11 +821,17 @@ class _NewScorecardState extends State<NewScorecard> {
               width: double.infinity,
               scale: 1,
             ),
-            const TabBarView(
+            TabBarView(
               children: [
-                Icon(Icons.music_note),
-                Icon(Icons.music_video),
-                Icon(Icons.camera_alt),
+                ScoreCardScreen(
+                  url: widget.url2,
+                ),
+                SquadInfo(
+                  url: widget.url3,
+                ),
+                MatchInfo(
+                  url: widget.url2,
+                )
               ],
             ),
           ],
@@ -830,15 +840,7 @@ class _NewScorecardState extends State<NewScorecard> {
     );
   }
 
-  TextStyle textMethod(
-      Color color, double fontSize, FontWeight fontWeight, String fontFamily) {
-    return TextStyle(
-      color: color,
-      fontSize: fontSize,
-      fontWeight: fontWeight,
-      fontFamily: fontFamily,
-    );
-  }
+
 
   ListView listbuilderMethod(List items, Widget Function(dynamic) itemBuilder) {
     return ListView.builder(
