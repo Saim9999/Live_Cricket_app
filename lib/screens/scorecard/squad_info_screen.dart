@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:http/http.dart' as http;
 import 'package:html/parser.dart' as html;
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../../utils/text_style.dart';
 
@@ -143,85 +144,79 @@ class _SquadInfoState extends State<SquadInfo> {
             scale: 1,
           ),
           isLoading
-              ? const Center(child: CircularProgressIndicator())
+              ? Center(
+                  child: LoadingAnimationWidget.horizontalRotatingDots(
+                    size: 50,
+                    color: Color.fromARGB(255, 114, 255, 48),
+                  ),
+                )
               : ListView(children: [
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: ScrollPhysics(),
-                    padding: const EdgeInsets.all(8.0),
-                    itemCount: teamHeaderItem.length,
-                    itemBuilder: (context, index) {
-                      final item = teamHeaderItem[index];
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
+                  listbuilderMethod(
+                      teamHeaderItem,
+                      (item) => Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Container(
-                                height: 20.h,
-                                width: 30.h,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(2.r),
-                                    image: DecorationImage(
-                                        image: NetworkImage(
-                                            'https://www.cricbuzz.com${item.team1ImageSrc}'),
-                                        fit: BoxFit.fill)),
+                              Row(
+                                children: [
+                                  Container(
+                                    height: 20.h,
+                                    width: 30.h,
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(2.r),
+                                        image: DecorationImage(
+                                            image: NetworkImage(
+                                                'https://www.cricbuzz.com${item.team1ImageSrc}'),
+                                            fit: BoxFit.fill)),
+                                  ),
+                                  SizedBox(
+                                    width: 5.w,
+                                  ),
+                                  Text(
+                                    item.team1Name,
+                                    style: textMethod(Colors.white, 16.sp,
+                                        FontWeight.bold, 'Mulish-ExtraBold'),
+                                  ),
+                                ],
                               ),
-                              SizedBox(
-                                width: 5.w,
-                              ),
-                              Text(
-                                item.team1Name,
-                                style: textMethod(Colors.white, 16.sp,
-                                    FontWeight.bold, 'Mulish-ExtraBold'),
+                              Row(
+                                children: [
+                                  Container(
+                                    height: 20.h,
+                                    width: 30.h,
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(2.r),
+                                        image: DecorationImage(
+                                            image: NetworkImage(
+                                                'https://www.cricbuzz.com${item.team2ImageSrc}'),
+                                            fit: BoxFit.fill)),
+                                  ),
+                                  SizedBox(
+                                    width: 5.w,
+                                  ),
+                                  Text(
+                                    item.team2Name,
+                                    style: textMethod(Colors.white, 16.sp,
+                                        FontWeight.bold, 'Mulish-ExtraBold'),
+                                  ),
+                                ],
                               ),
                             ],
-                          ),
-                          Row(
-                            children: [
-                              Container(
-                                height: 20.h,
-                                width: 30.h,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(2.r),
-                                    image: DecorationImage(
-                                        image: NetworkImage(
-                                            'https://www.cricbuzz.com${item.team2ImageSrc}'),
-                                        fit: BoxFit.fill)),
-                              ),
-                              SizedBox(
-                                width: 5.w,
-                              ),
-                              Text(
-                                item.team2Name,
-                                style: textMethod(Colors.white, 16.sp,
-                                    FontWeight.bold, 'Mulish-ExtraBold'),
-                              ),
-                            ],
-                          ),
-                        ],
-                      );
-                    },
-                  ),
+                          )),
                   Divider(
                     color: Colors.white,
                     thickness: 1,
                   ),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: ScrollPhysics(),
-                    itemCount: squadorPlaying.length,
-                    itemBuilder: (context, index) {
-                      final item = squadorPlaying[index];
-                      return Center(
-                        child: Text(
-                          item.squadorPlaying,
-                          style: textMethod(Colors.white, 16.sp,
-                              FontWeight.bold, 'SpaceGrotesk-Regular'),
-                        ),
-                      );
-                    },
-                  ),
+                  listbuilderMethod(
+                      squadorPlaying,
+                      (item) => Center(
+                            child: Text(
+                              item.squadorPlaying,
+                              style: textMethod(Colors.white, 16.sp,
+                                  FontWeight.bold, 'SpaceGrotesk-Regular'),
+                            ),
+                          )),
                   Divider(
                     color: Colors.white,
                     thickness: 1,
@@ -230,131 +225,120 @@ class _SquadInfoState extends State<SquadInfo> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
-                        flex: 3,
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          physics: const ScrollPhysics(),
-                          itemCount: firstPlayingXIItem.length,
-                          itemBuilder: (context, index) {
-                            final item = firstPlayingXIItem[index];
-                            return ListTile(
-                              visualDensity: VisualDensity.compact,
-                              contentPadding: EdgeInsets.only(left: 4),
-                              leading: CircleAvatar(
-                                backgroundImage: NetworkImage(
-                                    'https://www.cricbuzz.com${item.imageUrl}'),
-                              ),
-                              title: Text(
-                                item.name,
-                                style: textMethod(Colors.white, 12.sp,
-                                    FontWeight.normal, 'Mulish-ExtraBold'),
-                              ),
-                              subtitle: Text(
-                                item.role,
-                                style: textMethod(Colors.grey, 12.sp,
-                                    FontWeight.normal, 'SpaceGrotesk-Regular'),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
+                          flex: 3,
+                          child: listbuilderMethod(
+                              firstPlayingXIItem,
+                              (item) => ListTile(
+                                    visualDensity: VisualDensity.compact,
+                                    contentPadding: EdgeInsets.only(left: 4),
+                                    leading: CircleAvatar(
+                                      backgroundImage: NetworkImage(
+                                          'https://www.cricbuzz.com${item.imageUrl}'),
+                                    ),
+                                    title: Text(
+                                      item.name,
+                                      style: textMethod(
+                                          Colors.white,
+                                          12.sp,
+                                          FontWeight.normal,
+                                          'Mulish-ExtraBold'),
+                                    ),
+                                    subtitle: Text(
+                                      item.role,
+                                      style: textMethod(
+                                          Colors.grey,
+                                          12.sp,
+                                          FontWeight.normal,
+                                          'SpaceGrotesk-Regular'),
+                                    ),
+                                  ))),
                       Expanded(
                           flex: 1,
                           child: VerticalDivider(
                             color: Colors.amber,
                           )),
                       Expanded(
-                        flex: 3,
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          physics: const ScrollPhysics(),
-                          itemCount: secondPlayingXIItem.length,
-                          itemBuilder: (context, index) {
-                            final item = secondPlayingXIItem[index];
-                            return ListTile(
-                              contentPadding: EdgeInsets.only(right: 4),
-                              visualDensity: VisualDensity.compact,
-                              trailing: CircleAvatar(
-                                backgroundImage: NetworkImage(
-                                    'https://www.cricbuzz.com${item.imageUrl}'),
-                              ),
-                              title: Text(
-                                item.name,
-                                style: textMethod(Colors.white, 12.sp,
-                                    FontWeight.normal, 'Mulish-ExtraBold'),
-                              ),
-                              subtitle: Text(
-                                item.role,
-                                style: textMethod(Colors.grey, 12.sp,
-                                    FontWeight.normal, 'SpaceGrotesk-Regular'),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
+                          flex: 3,
+                          child: listbuilderMethod(
+                              secondPlayingXIItem,
+                              (item) => ListTile(
+                                    contentPadding: EdgeInsets.only(right: 4),
+                                    visualDensity: VisualDensity.compact,
+                                    trailing: CircleAvatar(
+                                      backgroundImage: NetworkImage(
+                                          'https://www.cricbuzz.com${item.imageUrl}'),
+                                    ),
+                                    title: Text(
+                                      item.name,
+                                      style: textMethod(
+                                          Colors.white,
+                                          12.sp,
+                                          FontWeight.normal,
+                                          'Mulish-ExtraBold'),
+                                    ),
+                                    subtitle: Text(
+                                      item.role,
+                                      style: textMethod(
+                                          Colors.grey,
+                                          12.sp,
+                                          FontWeight.normal,
+                                          'SpaceGrotesk-Regular'),
+                                    ),
+                                  ))),
                     ],
                   ),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: ScrollPhysics(),
-                    itemCount: benchPlayers.length,
-                    itemBuilder: (context, index) {
-                      final item = benchPlayers[index];
-                      return Center(
-                        child: Column(
-                          children: [
-                            Divider(
-                              color: Colors.white,
-                              thickness: 1,
+                  listbuilderMethod(
+                      benchPlayers,
+                      (item) => Center(
+                            child: Column(
+                              children: [
+                                Divider(
+                                  color: Colors.white,
+                                  thickness: 1,
+                                ),
+                                Text(
+                                  item.benchPlayers,
+                                  style: textMethod(Colors.white, 16.sp,
+                                      FontWeight.bold, 'SpaceGrotesk-Regular'),
+                                ),
+                                Divider(
+                                  color: Colors.white,
+                                  thickness: 1,
+                                ),
+                              ],
                             ),
-                            Text(
-                              item.benchPlayers,
-                              style: textMethod(Colors.white, 16.sp,
-                                  FontWeight.bold, 'SpaceGrotesk-Regular'),
-                            ),
-                            Divider(
-                              color: Colors.white,
-                              thickness: 1,
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
+                          )),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
                           flex: 3,
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            physics: const ScrollPhysics(),
-                            itemCount: firstBenchPlayersItem.length,
-                            itemBuilder: (context, index) {
-                              final item = firstBenchPlayersItem[index];
-                              return ListTile(
-                                contentPadding: EdgeInsets.only(left: 4),
-                                visualDensity: VisualDensity.compact,
-                                leading: CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                      'https://www.cricbuzz.com${item.imageUrl}'),
-                                ),
-                                title: Text(
-                                  item.name,
-                                  style: textMethod(Colors.white, 12.sp,
-                                      FontWeight.normal, 'Mulish-ExtraBold'),
-                                ),
-                                subtitle: Text(
-                                  item.role,
-                                  style: textMethod(
-                                      Colors.grey,
-                                      12.sp,
-                                      FontWeight.normal,
-                                      'SpaceGrotesk-Regular'),
-                                ),
-                              );
-                            },
-                          )),
+                          child: listbuilderMethod(
+                              firstBenchPlayersItem,
+                              (item) => ListTile(
+                                    contentPadding: EdgeInsets.only(left: 4),
+                                    visualDensity: VisualDensity.compact,
+                                    leading: CircleAvatar(
+                                      backgroundImage: NetworkImage(
+                                          'https://www.cricbuzz.com${item.imageUrl}'),
+                                    ),
+                                    title: Text(
+                                      item.name,
+                                      style: textMethod(
+                                          Colors.white,
+                                          12.sp,
+                                          FontWeight.normal,
+                                          'Mulish-ExtraBold'),
+                                    ),
+                                    subtitle: Text(
+                                      item.role,
+                                      style: textMethod(
+                                          Colors.grey,
+                                          12.sp,
+                                          FontWeight.normal,
+                                          'SpaceGrotesk-Regular'),
+                                    ),
+                                  ))),
                       Expanded(
                           flex: 1,
                           child: VerticalDivider(
@@ -362,98 +346,86 @@ class _SquadInfoState extends State<SquadInfo> {
                           )),
                       Expanded(
                           flex: 3,
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            physics: const ScrollPhysics(),
-                            itemCount: secondBenchPlayersItem.length,
-                            itemBuilder: (context, index) {
-                              final item = secondBenchPlayersItem[index];
-                              return ListTile(
-                                contentPadding: EdgeInsets.only(right: 4),
-                                visualDensity: VisualDensity.compact,
-                                trailing: CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                      'https://www.cricbuzz.com${item.imageUrl}'),
-                                ),
-                                title: Text(
-                                  item.name,
-                                  style: textMethod(Colors.white, 12.sp,
-                                      FontWeight.normal, 'Mulish-ExtraBold'),
-                                ),
-                                subtitle: Text(
-                                  item.role,
-                                  style: textMethod(
-                                      Colors.grey,
-                                      12.sp,
-                                      FontWeight.normal,
-                                      'SpaceGrotesk-Regular'),
-                                ),
-                              );
-                            },
-                          )),
+                          child: listbuilderMethod(
+                              secondBenchPlayersItem,
+                              (item) => ListTile(
+                                    contentPadding: EdgeInsets.only(right: 4),
+                                    visualDensity: VisualDensity.compact,
+                                    trailing: CircleAvatar(
+                                      backgroundImage: NetworkImage(
+                                          'https://www.cricbuzz.com${item.imageUrl}'),
+                                    ),
+                                    title: Text(
+                                      item.name,
+                                      style: textMethod(
+                                          Colors.white,
+                                          12.sp,
+                                          FontWeight.normal,
+                                          'Mulish-ExtraBold'),
+                                    ),
+                                    subtitle: Text(
+                                      item.role,
+                                      style: textMethod(
+                                          Colors.grey,
+                                          12.sp,
+                                          FontWeight.normal,
+                                          'SpaceGrotesk-Regular'),
+                                    ),
+                                  ))),
                     ],
                   ),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: ScrollPhysics(),
-                    itemCount: supportStaffHeading.length,
-                    itemBuilder: (context, index) {
-                      final item = supportStaffHeading[index];
-                      return Center(
-                        child: Column(
-                          children: [
-                            Divider(
-                              color: Colors.white,
-                              thickness: 1,
+                  listbuilderMethod(
+                      supportStaffHeading,
+                      (item) => Center(
+                            child: Column(
+                              children: [
+                                Divider(
+                                  color: Colors.white,
+                                  thickness: 1,
+                                ),
+                                Text(
+                                  item.supportStaff,
+                                  style: textMethod(Colors.white, 16.sp,
+                                      FontWeight.bold, 'SpaceGrotesk-Regular'),
+                                ),
+                                Divider(
+                                  color: Colors.white,
+                                  thickness: 1,
+                                ),
+                              ],
                             ),
-                            Text(
-                              item.supportStaff,
-                              style: textMethod(Colors.white, 16.sp,
-                                  FontWeight.bold, 'SpaceGrotesk-Regular'),
-                            ),
-                            Divider(
-                              color: Colors.white,
-                              thickness: 1,
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
+                          )),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
                           flex: 3,
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            physics: const ScrollPhysics(),
-                            itemCount: firstSupportStaff.length,
-                            itemBuilder: (context, index) {
-                              final item = firstSupportStaff[index];
-                              return ListTile(
-                                contentPadding: EdgeInsets.only(left: 4),
-                                visualDensity: VisualDensity.compact,
-                                leading: CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                      'https://www.cricbuzz.com${item.imageUrl}'),
-                                ),
-                                title: Text(
-                                  item.name,
-                                  style: textMethod(Colors.white, 12.sp,
-                                      FontWeight.normal, 'Mulish-ExtraBold'),
-                                ),
-                                subtitle: Text(
-                                  item.role,
-                                  style: textMethod(
-                                      Colors.grey,
-                                      12.sp,
-                                      FontWeight.normal,
-                                      'SpaceGrotesk-Regular'),
-                                ),
-                              );
-                            },
-                          )),
+                          child: listbuilderMethod(
+                              firstSupportStaff,
+                              (item) => ListTile(
+                                    contentPadding: EdgeInsets.only(left: 4),
+                                    visualDensity: VisualDensity.compact,
+                                    leading: CircleAvatar(
+                                      backgroundImage: NetworkImage(
+                                          'https://www.cricbuzz.com${item.imageUrl}'),
+                                    ),
+                                    title: Text(
+                                      item.name,
+                                      style: textMethod(
+                                          Colors.white,
+                                          12.sp,
+                                          FontWeight.normal,
+                                          'Mulish-ExtraBold'),
+                                    ),
+                                    subtitle: Text(
+                                      item.role,
+                                      style: textMethod(
+                                          Colors.grey,
+                                          12.sp,
+                                          FontWeight.normal,
+                                          'SpaceGrotesk-Regular'),
+                                    ),
+                                  ))),
                       Expanded(
                           flex: 1,
                           child: VerticalDivider(
@@ -461,40 +433,35 @@ class _SquadInfoState extends State<SquadInfo> {
                           )),
                       Expanded(
                           flex: 3,
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            physics: const ScrollPhysics(),
-                            itemCount: secondSupportStaff.length,
-                            itemBuilder: (context, index) {
-                              final item = secondSupportStaff[index];
-                              return ListTile(
-                                contentPadding: EdgeInsets.only(right: 4),
-                                visualDensity: VisualDensity.compact,
-                                trailing: CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                      'https://www.cricbuzz.com${item.imageUrl}'),
-                                ),
-                                title: Text(
-                                  item.name,
-                                  style: textMethod(Colors.white, 12.sp,
-                                      FontWeight.normal, 'Mulish-ExtraBold'),
-                                ),
-                                subtitle: Text(
-                                  item.role,
-                                  style: textMethod(
-                                      Colors.grey,
-                                      12.sp,
-                                      FontWeight.normal,
-                                      'SpaceGrotesk-Regular'),
-                                ),
-                              );
-                            },
-                          )),
+                          child: listbuilderMethod(
+                              secondSupportStaff,
+                              (item) => ListTile(
+                                    contentPadding: EdgeInsets.only(right: 4),
+                                    visualDensity: VisualDensity.compact,
+                                    trailing: CircleAvatar(
+                                      backgroundImage: NetworkImage(
+                                          'https://www.cricbuzz.com${item.imageUrl}'),
+                                    ),
+                                    title: Text(
+                                      item.name,
+                                      style: textMethod(
+                                          Colors.white,
+                                          12.sp,
+                                          FontWeight.normal,
+                                          'Mulish-ExtraBold'),
+                                    ),
+                                    subtitle: Text(
+                                      item.role,
+                                      style: textMethod(
+                                          Colors.grey,
+                                          12.sp,
+                                          FontWeight.normal,
+                                          'SpaceGrotesk-Regular'),
+                                    ),
+                                  ))),
                     ],
                   ),
                 ])
         ]));
   }
-
-
 }

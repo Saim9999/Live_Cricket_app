@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
@@ -145,11 +146,9 @@ class _NewsScreenState extends State<NewsScreen> {
       // Check if the widget is still mounted before proceeding
       return;
     }
-
     final response = await http.get(
       Uri.parse('https://www.cricbuzz.com/'),
     );
-
     if (response.statusCode == 200) {
       final document = html.parse(response.body);
 

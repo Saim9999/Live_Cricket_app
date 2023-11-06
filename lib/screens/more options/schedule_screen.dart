@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:html/parser.dart' as html;
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../../utils/text_style.dart';
 
@@ -91,7 +92,12 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 image: AssetImage('assets/images/Rectangle 6370.png'),
                 fit: BoxFit.cover)),
         child: isLoading
-            ? Center(child: CircularProgressIndicator())
+            ? Center(
+                child: LoadingAnimationWidget.horizontalRotatingDots(
+                  size: 50,
+                  color: Color.fromARGB(255, 114, 255, 48),
+                ),
+              )
             : Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ListView(children: [
@@ -104,29 +110,30 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     itemCount: seriesName.length,
                     itemBuilder: (context, index) {
                       final item = seriesName[index];
-                      return ListTile(
-                        title: Text(item.seriesName,
-                            style: textMethod(Colors.white, 16.sp,
-                                FontWeight.normal, 'Mulish-ExtraBold')),
-                        subtitle: Text(item.seriesDate,
-                            style: textMethod(Colors.white, 14.sp,
-                                FontWeight.normal, 'SpaceGrotesk-Regular')),
-                        onTap: () async {
-                          Get.to(SeriesDetail(
-                            seriesurl: 'https://www.cricbuzz.com/${item.seriesUrl}',
-                          ));
-                          // Launch the Series URL in the web browser
-                          // var seriesUri = Uri.parse(
-                          //     'https://www.cricbuzz.com/${item.seriesUrl}');
-                          // if (await canLaunchUrl(seriesUri)) {
-                          //   await launchUrl(seriesUri);
-                          // } else {
-                          //   print("Could not launch player profile.");
-                          // }
-                        },
+                      return Column(
+                        children: [
+                          ListTile(
+                            title: Text(item.seriesName,
+                                style: textMethod(Colors.white, 16.sp,
+                                    FontWeight.normal, 'Mulish-ExtraBold')),
+                            subtitle: Text(item.seriesDate,
+                                style: textMethod(Colors.white, 14.sp,
+                                    FontWeight.normal, 'SpaceGrotesk-Regular')),
+                            onTap: () async {
+                              Get.to(SeriesDetail(
+                                seriesurl:
+                                    'https://www.cricbuzz.com/${item.seriesUrl}',
+                              ));
+                            },
+                          ),
+                          Divider(
+                            color: Colors.white,
+                            height: 4.0,
+                          )
+                        ],
                       );
                     },
-                  )
+                  ),
                 ]),
               ),
       ),

@@ -9,3 +9,15 @@ TextStyle textMethod(
     fontFamily: fontFamily,
   );
 }
+
+ListView listbuilderMethod(List items, Widget Function(dynamic) itemBuilder) {
+  return ListView.builder(
+    shrinkWrap: true,
+    physics: const ScrollPhysics(),
+    itemCount: items.length,
+    itemBuilder: (context, index) {
+      final item = items[index];
+      return itemBuilder(item);
+    },
+  );
+}

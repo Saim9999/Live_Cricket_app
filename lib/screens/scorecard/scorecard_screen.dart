@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:http/http.dart' as http;
 import 'package:html/parser.dart' as html;
 import 'package:cricket_worldcup_app/classes/scorecard_classes.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../../utils/text_style.dart';
 
@@ -59,7 +60,6 @@ class _ScoreCardScreenState extends State<ScoreCardScreen> {
     );
     if (response.statusCode == 200) {
       final document = html.parse(response.body);
-
       // for scorecard headers (example: Batter R B 4s 6s SR)
       extractScoreHeaderItem(document, firstscoreHeaderItems, '1');
       extractScoreHeaderItem(document, secondscoreHeaderItems, '2');
@@ -107,6 +107,32 @@ class _ScoreCardScreenState extends State<ScoreCardScreen> {
     }
   }
 
+  Future<void> _refreshData() async {
+    // For example, you can clear the existing data and fetch new data
+    firstscoreHeaderItems.clear();
+    firstscorecardItems.clear();
+    firsttotalscoreItems.clear();
+    firstbowlerDataItems.clear();
+    firstpowerplayDataItems.clear();
+    secondscoreHeaderItems.clear();
+    secondscorecardItems.clear();
+    secondtotalscoreItems.clear();
+    secondbowlerDataItems.clear();
+    secondpowerplayDataItems.clear();
+    thirdscoreHeaderItems.clear();
+    thirdscorecardItems.clear();
+    thirdtotalscoreItems.clear();
+    thirdbowlerDataItems.clear();
+    thirdpowerplayDataItems.clear();
+    fourthscoreHeaderItems.clear();
+    fourthscorecardItems.clear();
+    fourthtotalscoreItems.clear();
+    fourthbowlerDataItems.clear();
+    fourthpowerplayDataItems.clear();
+
+    await scorecardMatches();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -120,34 +146,44 @@ class _ScoreCardScreenState extends State<ScoreCardScreen> {
           scale: 1,
         ),
         isLoading
-            ? const Center(child: CircularProgressIndicator())
-            : ListView(
-                children: [
-                  listbuilderMethod(
-                      fourthscoreHeaderItems,
-                      fourthscorecardItems,
-                      fourthtotalscoreItems,
-                      fourthbowlerDataItems,
-                      fourthpowerplayDataItems),
-                  listbuilderMethod(
-                      thirdscoreHeaderItems,
-                      thirdscorecardItems,
-                      thirdtotalscoreItems,
-                      thirdbowlerDataItems,
-                      thirdpowerplayDataItems),
-                  listbuilderMethod(
-                      secondscoreHeaderItems,
-                      secondscorecardItems,
-                      secondtotalscoreItems,
-                      secondbowlerDataItems,
-                      secondpowerplayDataItems),
-                  listbuilderMethod(
-                      firstscoreHeaderItems,
-                      firstscorecardItems,
-                      firsttotalscoreItems,
-                      firstbowlerDataItems,
-                      firstpowerplayDataItems),
-                ],
+            ? Center(
+                child: LoadingAnimationWidget.horizontalRotatingDots(
+                  size: 50,
+                  color: Color.fromARGB(255, 114, 255, 48),
+                ),
+              )
+            : RefreshIndicator(
+                onRefresh: _refreshData,
+                backgroundColor: Color.fromARGB(255, 15, 19, 1),
+                color: Color.fromARGB(255, 114, 255, 48),
+                child: ListView(
+                  children: [
+                    listbuilderMethod(
+                        fourthscoreHeaderItems,
+                        fourthscorecardItems,
+                        fourthtotalscoreItems,
+                        fourthbowlerDataItems,
+                        fourthpowerplayDataItems),
+                    listbuilderMethod(
+                        thirdscoreHeaderItems,
+                        thirdscorecardItems,
+                        thirdtotalscoreItems,
+                        thirdbowlerDataItems,
+                        thirdpowerplayDataItems),
+                    listbuilderMethod(
+                        secondscoreHeaderItems,
+                        secondscorecardItems,
+                        secondtotalscoreItems,
+                        secondbowlerDataItems,
+                        secondpowerplayDataItems),
+                    listbuilderMethod(
+                        firstscoreHeaderItems,
+                        firstscorecardItems,
+                        firsttotalscoreItems,
+                        firstbowlerDataItems,
+                        firstpowerplayDataItems),
+                  ],
+                ),
               )
       ]),
     );

@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:html/parser.dart' as html;
 import 'package:cricket_worldcup_app/classes/scorecard_classes.dart';
 import 'package:intl/intl.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class MatchInfo extends StatefulWidget {
   final String url;
@@ -106,7 +107,12 @@ class _MatchInfoState extends State<MatchInfo> {
           scale: 1,
         ),
         isLoading
-            ? const Center(child: CircularProgressIndicator())
+            ? Center(
+                child: LoadingAnimationWidget.horizontalRotatingDots(
+                  size: 50,
+                  color: Color.fromARGB(255, 114, 255, 48),
+                ),
+              )
             : ListView(
                 children: [
                   ListView.builder(
